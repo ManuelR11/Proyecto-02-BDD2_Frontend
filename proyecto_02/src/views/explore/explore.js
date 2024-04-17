@@ -71,7 +71,6 @@ const Explore = ({ loggedInUser }) => {
                 tweetLinks={tweet.links}
               />
               {/* Mostrar el conteo de likes desde el estado */}
-              <p>Likes: {likesCounts[tweet.id] || 0}</p>
             </div>
           ))}
         </div>

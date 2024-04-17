@@ -10,8 +10,6 @@ const Profile = ({ loggedInUser, setLoggedInUser }) => {
   const [postedTweets, setPostedTweets] = useState([]);
   const [likedTweets, setLikedTweets] = useState([]);
   const [currentContentType, setCurrentContentType] = useState('tweets');
-  const [likesCounts, setLikesCounts] = useState({});
-  const [isVerified, setIsVerified] = useState(false); // Nuevo estado para verificar si el usuario está verificado
 
   useEffect(() => {
     if (loggedInUser) {
@@ -20,10 +18,6 @@ const Profile = ({ loggedInUser, setLoggedInUser }) => {
       axios.get(`http://18.221.157.193:3161/tweets/posted/${loggedInUser}`)
         .then(response => {
           setPostedTweets(response.data);
-          // Obtener el conteo de likes para los tweets publicados
-          response.data.forEach(tweet => {
-            fetchLikesCount(tweet.id);
-          });
         })
         .catch(error => {
           console.error('Error fetching posted tweets:', error);
@@ -32,18 +26,10 @@ const Profile = ({ loggedInUser, setLoggedInUser }) => {
       axios.get(`http://18.221.157.193:3161/tweets/liked/${loggedInUser}`)
         .then(response => {
           setLikedTweets(response.data);
-          // Obtener el conteo de likes para los tweets que el usuario ha dado like
-          response.data.forEach(tweet => {
-            fetchLikesCount(tweet.id);
-          });
         })
         .catch(error => {
           console.error('Error fetching liked tweets:', error);
         });
-
-      // Aquí agregarías la lógica para obtener si el usuario está verificado o no
-      // Por ahora, establecemos un valor predeterminado
-      setIsVerified(true);
     }
   }, [loggedInUser]);
 
@@ -75,9 +61,40 @@ const Profile = ({ loggedInUser, setLoggedInUser }) => {
   const handleContentChange = (contentType) => {
     setCurrentContentType(contentType);
   };
+  const handleDeleteTweet = async (tweetId) => {
+    try {
+      const response = await axios.post('http://18.221.157.193:3161/tweets/delete', {
+        id: tweetId,
+      });
+  
+      console.log('Response:', response.data); // Agregamos esta línea para verificar la respuesta del servidor
+  
+      if (response.data.success) {
+        // Actualizar el estado de los tweets
+        if (currentContentType === 'tweets') {
+          setPostedTweets(postedTweets.filter(tweet => tweet.id !== tweetId));
+        } else {
+          setLikedTweets(likedTweets.filter(tweet => tweet.id !== tweetId));
+        }
+      } else {
+        // Mostrar mensaje de error al usuario
+        alert('No se pudo borrar el tweet');
+      }
+    } catch (error) {
+      console.error('Error al borrar el tweet:', error);
+      // Mostrar mensaje de error al usuario
+      alert('Ocurrió un error al borrar el tweet');
+    }
+  };
+  
 
   const handleButtonPress = (type, tweet) => {
-    console.log(`Botón ${type} presionado para el tweet con ID: ${tweet.id}`);
+    if (type === "delete") {
+      console.log("Tweet ID a borrar:", tweet.id);
+      handleDeleteTweet(tweet.id);
+    } else {
+      console.log(`Botón ${type} presionado para el tweet con ID: ${tweet.id}`);
+    }
   };
 
   const formatDate = (date) => {
@@ -89,43 +106,31 @@ const Profile = ({ loggedInUser, setLoggedInUser }) => {
     }
   };
 
-  const fetchLikesCount = async (tweetId) => {
-    try {
-      const response = await axios.post('http://18.221.157.193:3161/tweets/likes', {
-        id: tweetId
-      });
-      const likesCount = response.data.likesCount;
-      // Actualizar el estado de likesCounts con el conteo de likes para este tweet
-      setLikesCounts(prevState => ({
-        ...prevState,
-        [tweetId]: likesCount
-      }));
-    } catch (error) {
-      console.error('Error fetching likes count:', error);
-    }
-  };
-
   const renderTweets = (tweets) => {
-    const likedTweetIds = likedTweets.map(tweet => tweet.id);
+    const likedTweetIds = likedTweets.map(tweet => tweet.id); 
 
     return (
       <div className="tweets-expanded">
         <h3>{currentContentType === 'likes' ? 'Likes' : 'Posts'}</h3>
-        {tweets.map((tweet, index) => (
-          <div key={index} style={{ marginLeft: '20%' }}>
-            <RecipeReviewCard
-              nombre={currentContentType === 'tweets' ? loggedInUser : tweet.author}
-              date={formatDate(tweet.fecha)}
-              tweetContent={tweet.texto}
-              comentario1="Comentario 1"
-              comentario2="Comentario 2"
-              onButtonPress={handleButtonPress}
-              liked={likedTweetIds.includes(tweet.id)}
-            />
-            {/* Mostrar el conteo de likes desde el estado */}
-            <p>Likes: {likesCounts[tweet.id] || 0}</p>
-          </div>
-        ))}
+        {tweets.map((tweet, index) => {
+          const isLiked = likedTweetIds.includes(tweet.id);
+          return (
+            <div key={index} style={{ marginLeft: '20%' }}>
+              <RecipeReviewCard
+                nombre={currentContentType === 'tweets' ? loggedInUser : tweet.author}
+                date={formatDate(tweet.fecha)} 
+                tweetContent={tweet.texto}
+                comentario1="Comentario 1"
+                comentario2="Comentario 2"
+                onButtonPress={(type) => handleButtonPress(type, tweet)}
+                liked={isLiked} 
+                tweetHashtags={tweet.hashtags} // Propiedad para los hashtags
+                tweetLinks={tweet.links} // Propiedad para los enlaces
+                showDeleteButton={true} // Mostrar el botón de borrar
+              />
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -150,8 +155,6 @@ const Profile = ({ loggedInUser, setLoggedInUser }) => {
             ) : (
               <div className="profile-display">
                 <h2>{loggedInUser}</h2>
-                {/* Mostrar "Usuario verificado" en azul si el usuario está verificado */}
-                <h2 style={{ color: isVerified ? 'blue' : 'inherit' }}>Usuario verificado</h2>
                 <button className="profile-edit-button" onClick={handleEditProfile}>
                   Editar perfil
                 </button>
