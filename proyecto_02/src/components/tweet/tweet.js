@@ -54,6 +54,8 @@ export default function RecipeReviewCard({
   comentario1 = "Comentario 1", 
   comentario2 = "Comentario 2", 
   onButtonPress,
+  tweetHashtags = [], // Valor predeterminado para tweetHashtags
+  tweetLinks = [], // Valor predeterminado para tweetLinks
   showDeleteButton = false // Valor predeterminado para showDeleteButton
 }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -106,6 +108,16 @@ export default function RecipeReviewCard({
       <CardContent sx={{ color: 'white' }}>
         <Typography variant="body2" color="white">
           {tweetContent}
+        </Typography>
+        <Typography variant="body2" color="white">
+          {tweetHashtags.map((hashtag, index) => ( // Mapear cada hashtag en tweetHashtags  y mostrarlo 
+            <span key={index} style={{ color: 'blue' }}> {hashtag} </span>
+          ))}
+        </Typography>
+        <Typography variant="body2" color="white">
+            {tweetLinks.map((link, index) => ( // Mapear cada enlace en tweetLinks y mostrarlo
+                <a key={index} href={link} style={{ color: 'blue' }}> {link} </a>
+            ))}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

@@ -5,6 +5,7 @@ import "./home.css";
 import Sidebar from "../../components/Sidebar/sidebar.js";
 import Tweet from "../../components/tweet/tweet.js";
 
+
 function Home() {
     const [buttonPressInfo, setButtonPressInfo] = useState({});
 
@@ -31,7 +32,6 @@ function Home() {
                     comentario1="El BICHOOOOOOO" 
                     comentario2="SIUUUUUUUUUUUUUUUUUUUUUUUUUUUU" 
                     onButtonPress={handleButtonPress}
-                    showDeleteButton={true}
                 />
                 <Tweet/>
                 <Tweet/>
