@@ -61,7 +61,7 @@ const Register = () => {
       <div className="login-box">
         <img src={LogoX} alt="Logo X" className="login-logo" />
         <h3 className="login-title">Happening now</h3>
-        <h4 className="login-subtitle">Join today.</h4>
+        <h3 className="login-subtitle">Join today.</h3>
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="fullName">Nombre completo:</label>

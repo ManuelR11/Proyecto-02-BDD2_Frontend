@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './profile.css';
-import Sidebar from "../../components/Sidebar/sidebar"
+import Sidebar from "../../components/Sidebar/sidebar";
 import RecipeReviewCard from '../../components/tweet/tweet';
 import axios from 'axios';
 
-const Profile = ({ loggedInUser }) => {
+const Profile = ({ loggedInUser, setLoggedInUser }) => {
   const [username, setUsername] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [postedTweets, setPostedTweets] = useState([]);
   const [likedTweets, setLikedTweets] = useState([]);
   const [currentContentType, setCurrentContentType] = useState('tweets');
+  const [likesCounts, setLikesCounts] = useState({});
+  const [isVerified, setIsVerified] = useState(false); // Nuevo estado para verificar si el usuario está verificado
 
   useEffect(() => {
     if (loggedInUser) {
@@ -18,6 +20,10 @@ const Profile = ({ loggedInUser }) => {
       axios.get(`http://18.221.157.193:3161/tweets/posted/${loggedInUser}`)
         .then(response => {
           setPostedTweets(response.data);
+          // Obtener el conteo de likes para los tweets publicados
+          response.data.forEach(tweet => {
+            fetchLikesCount(tweet.id);
+          });
         })
         .catch(error => {
           console.error('Error fetching posted tweets:', error);
@@ -26,10 +32,18 @@ const Profile = ({ loggedInUser }) => {
       axios.get(`http://18.221.157.193:3161/tweets/liked/${loggedInUser}`)
         .then(response => {
           setLikedTweets(response.data);
+          // Obtener el conteo de likes para los tweets que el usuario ha dado like
+          response.data.forEach(tweet => {
+            fetchLikesCount(tweet.id);
+          });
         })
         .catch(error => {
           console.error('Error fetching liked tweets:', error);
         });
+
+      // Aquí agregarías la lógica para obtener si el usuario está verificado o no
+      // Por ahora, establecemos un valor predeterminado
+      setIsVerified(true);
     }
   }, [loggedInUser]);
 
@@ -37,8 +51,25 @@ const Profile = ({ loggedInUser }) => {
     setEditMode(true);
   };
 
-  const handleSaveProfile = () => {
-    setEditMode(false);
+  const handleSaveProfile = async () => {
+    try {
+      const response = await axios.post('http://18.221.157.193:3161/users/updateUsername', {
+        username: loggedInUser,
+        new_username: username,
+      });
+
+      if (response.data.success) {
+        setLoggedInUser(username);
+        setEditMode(false);
+      } else {
+        // Mostrar mensaje de error al usuario
+        alert('No se pudo actualizar el nombre de usuario');
+      }
+    } catch (error) {
+      console.error('Error al actualizar el nombre de usuario:', error);
+      // Mostrar mensaje de error al usuario
+      alert('Ocurrió un error al actualizar el nombre de usuario');
+    }
   };
 
   const handleContentChange = (contentType) => {
@@ -58,28 +89,43 @@ const Profile = ({ loggedInUser }) => {
     }
   };
 
+  const fetchLikesCount = async (tweetId) => {
+    try {
+      const response = await axios.post('http://18.221.157.193:3161/tweets/likes', {
+        id: tweetId
+      });
+      const likesCount = response.data.likesCount;
+      // Actualizar el estado de likesCounts con el conteo de likes para este tweet
+      setLikesCounts(prevState => ({
+        ...prevState,
+        [tweetId]: likesCount
+      }));
+    } catch (error) {
+      console.error('Error fetching likes count:', error);
+    }
+  };
+
   const renderTweets = (tweets) => {
-    const likedTweetIds = likedTweets.map(tweet => tweet.id); 
+    const likedTweetIds = likedTweets.map(tweet => tweet.id);
 
     return (
       <div className="tweets-expanded">
         <h3>{currentContentType === 'likes' ? 'Likes' : 'Posts'}</h3>
-        {tweets.map((tweet, index) => {
-          const isLiked = likedTweetIds.includes(tweet.id);
-          return (
-            <div key={index} style={{ marginLeft: '20%' }}>
-              <RecipeReviewCard
-                nombre={currentContentType === 'tweets' ? loggedInUser : tweet.author} // Usar loggedInUser para los posts propios
-                date={formatDate(tweet.fecha)} 
-                tweetContent={tweet.texto}
-                comentario1="Comentario 1"
-                comentario2="Comentario 2"
-                onButtonPress={handleButtonPress}
-                liked={isLiked} 
-              />
-            </div>
-          );
-        })}
+        {tweets.map((tweet, index) => (
+          <div key={index} style={{ marginLeft: '20%' }}>
+            <RecipeReviewCard
+              nombre={currentContentType === 'tweets' ? loggedInUser : tweet.author}
+              date={formatDate(tweet.fecha)}
+              tweetContent={tweet.texto}
+              comentario1="Comentario 1"
+              comentario2="Comentario 2"
+              onButtonPress={handleButtonPress}
+              liked={likedTweetIds.includes(tweet.id)}
+            />
+            {/* Mostrar el conteo de likes desde el estado */}
+            <p>Likes: {likesCounts[tweet.id] || 0}</p>
+          </div>
+        ))}
       </div>
     );
   };
@@ -94,7 +140,7 @@ const Profile = ({ loggedInUser }) => {
               <div className="profile-edit">
                 <input
                   type="text"
-                  value={loggedInUser}
+                  value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
                 <button className="profile-save-button" onClick={handleSaveProfile}>
@@ -104,6 +150,8 @@ const Profile = ({ loggedInUser }) => {
             ) : (
               <div className="profile-display">
                 <h2>{loggedInUser}</h2>
+                {/* Mostrar "Usuario verificado" en azul si el usuario está verificado */}
+                <h2 style={{ color: isVerified ? 'blue' : 'inherit' }}>Usuario verificado</h2>
                 <button className="profile-edit-button" onClick={handleEditProfile}>
                   Editar perfil
                 </button>

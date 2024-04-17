@@ -10,7 +10,7 @@ function Sidebar() {
     const navigate = useNavigate();
 
     const handleHomeClick = () => {
-        navigate("/");
+        navigate("/Home");
     };
 
     const handleExploreClick = () => {

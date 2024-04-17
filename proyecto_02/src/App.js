@@ -5,6 +5,7 @@ import Register from './views/Register/register.js';
 import Login from './views/LogIn/login.js';
 import Profile from './views/Profile/profile.js';
 import Bookmarks from './views/Bookmarks/Bookmarks.js';
+import Explore from './views/explore/explore.js';
 import Home from './views/Home/home.js';
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
       <Routes>
         <Route path="/Register" element={<Register />} />
         <Route path="/Login" element={<Login setLoggedInUser={setLoggedInUser} />} />
-        <Route path="/Profile" element={<Profile loggedInUser={loggedInUser} />} />
+        <Route path="/Profile" element={<Profile loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
+        <Route path="/Explore" element={<Explore loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
         <Route path="/Bookmarks" element={<Bookmarks loggedInUser={loggedInUser} />} />
         <Route path="/Home" element={<Home loggedInUser={loggedInUser} />} />
       </Routes>
