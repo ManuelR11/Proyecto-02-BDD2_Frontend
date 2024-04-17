@@ -1,0 +1,28 @@
+/* bookmarks.css */
+
+.bookmarks-container {
+    width: 100%; /* Ajusta el ancho del contenedor */
+    height: 100vh; /* Usa toda la altura disponible */
+    padding: 20px; /* Añade un espacio interno */
+    background-color: #000; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    overflow-y: auto; /* Agrega scroll vertical si es necesario */
+    margin-left: 10%;
+  }
+  
+  .bookmarks-expanded {
+    background-color: #000; /* Color de fondo del contenedor de tweets */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px; /* Espacio interno */
+  }
+  
+  .bookmarks-expanded h3 {
+    margin-top: 0; /* Elimina el margen superior */
+  }
+  
+  .bookmarks-expanded p {
+    margin: 0; /* Elimina el margen exterior */
+    padding: 5px 0; /* Espaciado interno */
+    color: #fff; /* Color del texto */
+  }
+  

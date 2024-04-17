@@ -1,0 +1,146 @@
+/* profile.css */
+
+.profile-container {
+  width: 320%; /* Resta el ancho de la sidebar */
+  height: 100vh;
+  padding: 20px;
+  background-color: #000;
+  color: #fff;
+  margin-left: 250px; /* Ajusta el margen izquierdo para dejar espacio para la sidebar */
+  overflow-y: auto; 
+}
+
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-info {
+  flex-grow: 1;
+  margin-left: 10%
+}
+
+.profile-edit {
+  display: flex;
+  align-items: center;
+}
+
+.profile-edit input[type="text"] {
+  flex-grow: 1;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #000;
+  color: #fff;
+}
+
+.profile-save-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-display h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.profile-edit-button {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.profile-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.posts,
+.likes {
+  flex-grow: 1;
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.posts:hover,
+.likes:hover {
+  background-color: #1a8cd8;
+}
+
+.posts-text,
+.likes-text {
+  margin: 0;
+  font-size: 18px;
+}
+
+.expanded-section {
+  margin-top: 20px;
+}
+
+.posts-expanded,
+.likes-expanded {
+  background-color: #000;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.posts-expanded h3,
+.likes-expanded h3 {
+  margin-top: 0;
+}
+
+.posts-expanded p,
+.likes-expanded p {
+  margin: 0;
+  padding: 5px 0;
+  color: #fff;
+}
+@media only screen and (max-width: 992px) {
+  .profile-container {
+    width: 100%; /* Ajustar el ancho para dispositivos medianos */
+    margin-left: 0; /* Eliminar el margen izquierdo para dispositivos medianos */
+  }
+
+  .profile-content {
+    flex-direction: column; /* Cambiar la dirección de los elementos a columna para dispositivos medianos */
+  }
+
+  .posts,
+  .likes {
+    flex-basis: calc(100% - 20px); /* Establecer el ancho completo menos el espacio entre los elementos */
+    margin: 10px 0; /* Espacio entre los elementos */
+  }
+}@media only screen and (max-width: 576px) {
+  .profile-container {
+    width: 100%; /* Ajustar el ancho para dispositivos pequeños */
+    margin-left: 0; /* Eliminar el margen izquierdo para dispositivos pequeños */
+  }
+}
+@media only screen and (min-width: 576px) and (max-width: 992px) {
+  .profile-container {
+    width: 100%; /* Ajustar el ancho para dispositivos medianos */
+    margin-left: 0; /* Eliminar el margen izquierdo para dispositivos medianos */
+  }
+
+  .profile-content {
+    flex-direction: column; /* Cambiar la dirección de los elementos a columna para dispositivos medianos */
+  }
+
+  .posts,
+  .likes {
+    flex-basis: calc(100% - 20px); /* Establecer el ancho completo menos el espacio entre los elementos */
+    margin: 10px 0; /* Espacio entre los elementos */
+  }
+}
