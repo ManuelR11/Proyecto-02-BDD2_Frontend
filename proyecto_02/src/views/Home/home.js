@@ -31,6 +31,7 @@ function Home() {
                     comentario1="El BICHOOOOOOO" 
                     comentario2="SIUUUUUUUUUUUUUUUUUUUUUUUUUUUU" 
                     onButtonPress={handleButtonPress}
+                    showDeleteButton={true}
                 />
                 <Tweet/>
                 <Tweet/>

@@ -5,6 +5,7 @@ import { AiFillHome } from "react-icons/ai";
 import { AiOutlineSearch } from "react-icons/ai";
 import { AiOutlineUser } from "react-icons/ai";
 import { CiBookmark } from "react-icons/ci";
+import Posts from "../../components/Post/post.js";
 
 function Sidebar() {
     const navigate = useNavigate();
@@ -39,7 +40,7 @@ function Sidebar() {
                 <button onClick={handleExploreClick}><AiOutlineSearch style={{ marginBottom: '5px', marginRight: '15px', fontSize: '33px'  }} />Explore</button>
                 <button onClick={handleProfileClick}><AiOutlineUser style={{ marginBottom: '5px', marginRight: '15px', fontSize: '33px'  }} />Profile</button>
                 <button onClick={handleBookmarksClick}><CiBookmark style={{ marginBottom: '5px', marginRight: '15px', fontSize: '33px'  }} />Bookmarks</button>
-                <button className="round-button" onClick={handlePostClick} style={{ backgroundColor: "blue", width: '220px', height: '60px', textAlign: 'center' }}>Post</button>
+                <Posts style={{ backgroundColor: "blue", width: '220px', height: '60px', textAlign: 'center' }}/>
             </div>
             <div className="post-button">
             </div>

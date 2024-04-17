@@ -9,12 +9,13 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
+import { blue, red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MdOutlineMarkChatUnread } from "react-icons/md";
 import { AiOutlineTrademarkCircle } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -46,11 +47,20 @@ const StyledCard = styled(Card)({
   minWidth: 625
 });
 
-export default function RecipeReviewCard({ nombre = "Manuel Rodas 11", date = "Date", tweetContent = "Este es un tweet", comentario1 = "Comentario 1", comentario2 = "Comentario 2", onButtonPress }) {
+export default function RecipeReviewCard({ 
+  nombre = "Manuel Rodas 11", 
+  date = "Date", 
+  tweetContent = "Este es un tweet", 
+  comentario1 = "Comentario 1", 
+  comentario2 = "Comentario 2", 
+  onButtonPress,
+  showDeleteButton = false // Valor predeterminado para showDeleteButton
+}) {
   const [expanded, setExpanded] = React.useState(false);
   const [likePressed, setLikePressed] = React.useState(false);
   const [retweetPressed, setRetweetPressed] = React.useState(false);
   const [favoritePressed, setFavoritePressed] = React.useState(false);
+  const [deletePressed, setDeletePressed] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -71,11 +81,16 @@ export default function RecipeReviewCard({ nombre = "Manuel Rodas 11", date = "D
     onButtonPress("favorite", !favoritePressed); // Llama a la función de devolución de llamada con el tipo de botón y su estado actual
   };
 
+  const handleDeleteClick = () => {
+    setDeletePressed(!deletePressed);
+    onButtonPress("delete", !deletePressed); // Llama a la función de devolución de llamada con el tipo de botón y su estado actual
+  };
+
   return (
     <StyledCard>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
             -
           </Avatar>
         }
@@ -104,6 +119,11 @@ export default function RecipeReviewCard({ nombre = "Manuel Rodas 11", date = "D
           <StyledIconButton aria-label="favorite" onClick={handleFavoriteClick}>
             <BsBookmark style={{ color: favoritePressed ? 'blue' : 'grey' }} />
           </StyledIconButton>
+          {showDeleteButton && ( // Condición para mostrar el botón de borrar
+            <StyledIconButton aria-label="delete" onClick={handleDeleteClick}>
+              <FaRegTrashAlt style={{ color: 'grey' }} />
+            </StyledIconButton>
+          )}
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}
