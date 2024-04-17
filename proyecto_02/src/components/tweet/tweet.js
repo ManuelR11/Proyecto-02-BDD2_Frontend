@@ -1,4 +1,3 @@
-// Tweet.js
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -9,13 +8,15 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { blue, red } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MdOutlineMarkChatUnread } from "react-icons/md";
-import { AiOutlineTrademarkCircle } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
 import { FaRegTrashAlt } from "react-icons/fa";
+import Retweet from '../Retweet/retweet.js';
+import Edit from '../Edit/edit.js';
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -56,7 +57,9 @@ export default function RecipeReviewCard({
   onButtonPress,
   tweetHashtags = [], // Valor predeterminado para tweetHashtags
   tweetLinks = [], // Valor predeterminado para tweetLinks
-  showDeleteButton = false // Valor predeterminado para showDeleteButton
+  showDeleteButton = false, // Valor predeterminado para showDeleteButton
+  RTId = "",
+  RT_mention = ""
 }) {
   const [expanded, setExpanded] = React.useState(false);
   const [likePressed, setLikePressed] = React.useState(false);
@@ -88,23 +91,21 @@ export default function RecipeReviewCard({
     onButtonPress("delete", !deletePressed); // Llama a la función de devolución de llamada con el tipo de botón y su estado actual
   };
 
+  const [retweetText, setRetweetText] = React.useState(''); // Estado para el contenido del retweet
+  
   return (
     <StyledCard>
-      <CardHeader
+        <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
+            <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
             -
-          </Avatar>
+            </Avatar>
         }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
+        action={showDeleteButton ? <Edit id={RTId} RT_mention={RT_mention} /> : null}
         title={nombre}
         subheader={date}
         subheaderTypographyProps={{ sx: { color: 'white' } }} // Cambiar el color de la fecha a blanco
-      />
+        />
       <CardContent sx={{ color: 'white' }}>
         <Typography variant="body2" color="white">
           {tweetContent}
@@ -130,7 +131,7 @@ export default function RecipeReviewCard({
             <FavoriteIcon style={{ color: likePressed ? 'red' : 'grey' }} />
           </StyledIconButton>
           <StyledIconButton aria-label="Retweet" onClick={handleRetweetClick}>
-            <AiOutlineTrademarkCircle style={{ color: retweetPressed ? 'green' : 'grey' }} />
+            <Retweet RTId={RTId} RT_mention={RT_mention} retweetText={retweetText} setRetweetText={setRetweetText} style={{ color: retweetPressed ? 'green' : 'grey' }} />
           </StyledIconButton>
           <StyledIconButton aria-label="favorite" onClick={handleFavoriteClick}>
             <BsBookmark style={{ color: favoritePressed ? 'blue' : 'grey' }} />

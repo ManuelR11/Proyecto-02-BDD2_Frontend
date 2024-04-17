@@ -15,7 +15,7 @@ const formatDate = (date) => {
     }
 };
 
-function Home() {
+const Home = ({loggedInUser}) => {
     const [tweets, setTweets] = useState([]);
     const [buttonPressInfo, setButtonPressInfo] = useState({});
 
@@ -34,6 +34,10 @@ function Home() {
                 console.error('Error fetching tweets:', error);
             });
     }, []); // El array vacío asegura que esta llamada solo se realice una vez al cargar el componente
+    
+    useEffect(() => {
+        console.log('Home' + loggedInUser); // Imprimir el texto del tweet
+      }, [loggedInUser]);
 
     useEffect(() => {
         // Aquí puedes usar la información de buttonPressInfo según sea necesario
@@ -43,7 +47,8 @@ function Home() {
     return (    
         <div className="home">
             <div className="sidebar">
-                <Sidebar />
+                {/* Pasar loggedInUser como prop a Sidebar */}
+                <Sidebar loggedInUser={loggedInUser} />
             </div>
             <div className="tweets">
                 <h1>For you</h1>
@@ -55,7 +60,10 @@ function Home() {
                         tweetContent={tweet.texto}
                         tweetHashtags={tweet.hashtags}
                         tweetLinks={tweet.links}
+                        RTId={tweet.id}
+                        RT_mention={tweet.author}
                         onButtonPress={handleButtonPress}
+                        showDeleteButton={true}
                     />
                 ))}
             </div>    

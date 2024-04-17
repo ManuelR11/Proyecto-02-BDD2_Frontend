@@ -7,11 +7,11 @@ import { AiOutlineUser } from "react-icons/ai";
 import { CiBookmark } from "react-icons/ci";
 import Posts from "../../components/Post/post.js";
 
-function Sidebar() {
+function Sidebar({ loggedInUser }) {
     const navigate = useNavigate();
 
     const handleHomeClick = () => {
-        navigate("/");
+        navigate("/home");
     };
 
     const handleExploreClick = () => {
@@ -30,6 +30,14 @@ function Sidebar() {
         // Acción a realizar al hacer clic en "Post"
     };
 
+
+    useEffect(() => {
+        console.log('Sidebar' + loggedInUser); // Imprimir el texto del tweet
+      }, [loggedInUser]);
+      
+    // Definir el valor de la nueva variable
+    const valueOfNewVariable = ""; // Aquí debes definir el valor que quieres pasar
+
     return (    
         <div className="sidebar">
             <div className="logo">
@@ -40,7 +48,8 @@ function Sidebar() {
                 <button onClick={handleExploreClick}><AiOutlineSearch style={{ marginBottom: '5px', marginRight: '15px', fontSize: '33px'  }} />Explore</button>
                 <button onClick={handleProfileClick}><AiOutlineUser style={{ marginBottom: '5px', marginRight: '15px', fontSize: '33px'  }} />Profile</button>
                 <button onClick={handleBookmarksClick}><CiBookmark style={{ marginBottom: '5px', marginRight: '15px', fontSize: '33px'  }} />Bookmarks</button>
-                <Posts style={{ backgroundColor: "blue", width: '220px', height: '60px', textAlign: 'center' }}/>
+                {/* Pasar valueOfNewVariable como prop a Posts */}
+                <Posts backgroundColor="blue" width="220px" height="60px" textAlign="center" loggedInUser={loggedInUser} />
             </div>
             <div className="post-button">
             </div>

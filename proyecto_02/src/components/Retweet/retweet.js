@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { AiOutlineTrademarkCircle } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
 import Hashtags from '../Hashtags/hashtags.js';
 import Example1 from '../Links/links.js'; // Cambia el nombre de la importación a Example1
 import Example2 from '../Mentions/mentions.js'; // Cambia el nombre de la importación a Example2
 import Example3 from "../Location/location.js";
 import axios from 'axios';
-import Posts from "../../components/Post/post.js";
 
-const Example = ({loggedInUser, newVariable}) => {
+function Retweet({ RTId, RT_mention }) {
   const [show, setShow] = useState(false);
   const [hashtags, setHashtags] = useState([]);
   const [links, setLinks] = useState([]); // Cambia el nombre de la variable a `links`
@@ -33,32 +33,25 @@ const Example = ({loggedInUser, newVariable}) => {
     console.log(location); // Imprimir la lista de location
   }, [location]);
 
-  useEffect(() => {
-    console.log('Posts ' + loggedInUser); // Imprimir el texto del tweet
-  }, [loggedInUser]);
-  
-
-  useEffect(() => {
-    console.log(newVariable); // Imprimir el valor de newVariable
-  }, [newVariable]);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleSubmit = async () => {
     const tweetData = {
-      autorId: loggedInUser, // Utilizar loggedInUser como el autor del tweet
+      autorId: "cmcmillan", // Cambia por el nombre de usuario deseado
       texto: tweetText,
       hashtags: hashtags,
       links: links,
       pais: location,
-      mentions: mentions
+      mentions: mentions,
+      RTId: RTId, // Agregar RTId a los datos del tweet
+      RT_mention: RT_mention // Agregar RT_mention a los datos del tweet
     };
 
     console.log("Tweet Data:", tweetData); // Imprimir en consola los datos antes de enviar la solicitud
 
     try {
-      const response = await axios.post('http://18.221.157.193:3161/tweets', tweetData);
+      const response = await axios.post('http://18.221.157.193:3161/tweets/rt', tweetData);
       console.log("Response:", response.data);
       handleClose();
     } catch (error) {
@@ -68,18 +61,8 @@ const Example = ({loggedInUser, newVariable}) => {
 
   return (
     <>
-      <Button
-        variant="primary"
-        onClick={handleShow}
-        style={{
-          backgroundColor: 'blue',
-          width: '220px',
-          height: '60px',
-          textAlign: 'center',
-          borderRadius: '25px'
-        }}
-      >
-        Post
+      <Button variant="primary" onClick={handleShow} style={{background: 'black', border: '0px', fontSize: '22px', color: 'grey'}}>
+        <AiOutlineTrademarkCircle />
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -126,14 +109,12 @@ const Example = ({loggedInUser, newVariable}) => {
               height: '100%'
             }}
           >
-            Post
+            Retweet
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* Pasar loggedInUser como prop a Posts */}
-      <Posts backgroundColor="blue" width="220px" height="60px" textAlign="center" loggedInUser={loggedInUser} />
     </>
   );
 }
 
-export default Example;
+export default Retweet;

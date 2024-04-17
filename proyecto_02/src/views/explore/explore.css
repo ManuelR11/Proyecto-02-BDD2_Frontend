@@ -1,0 +1,45 @@
+
+.explore-container {
+    display: flex; /* Cambiado a display flex */
+    max-width: 1000px; /* Ajusta el ancho máximo según tu diseño */
+    margin: 0 auto;
+    margin-left: 25%;
+    padding: 20px;
+  }
+  .explore-content {
+    flex: 1; /* Nuevo: Ajusta el contenido para que ocupe todo el espacio disponible */
+  }
+  
+  .search-results {
+    margin-top: 20px;
+  }
+  
+  
+  input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .search-results {
+    margin-top: 20px;
+  }
+
+  .tweet {
+    margin-bottom: 10px; /* Nuevo: Elimina el margen inferior */
+    background-color: transparent; /* Nuevo: Elimina el fondo blanco */
+  }
