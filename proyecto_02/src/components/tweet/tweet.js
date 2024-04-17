@@ -111,12 +111,16 @@ export default function RecipeReviewCard({
         </Typography>
         <Typography variant="body2" color="white">
           {tweetHashtags.map((hashtag, index) => ( // Mapear cada hashtag en tweetHashtags  y mostrarlo 
-            <span key={index} style={{ color: 'blue' }}> {hashtag} </span>
+            <span key={index} style={{ color: 'skyblue' }}> {hashtag} </span>
           ))}
         </Typography>
+        <br />
         <Typography variant="body2" color="white">
             {tweetLinks.map((link, index) => ( // Mapear cada enlace en tweetLinks y mostrarlo
-                <a key={index} href={link} style={{ color: 'blue' }}> {link} </a>
+                <React.Fragment key={index}>
+                    <a href={link} style={{ color: 'blue' }}> {link} </a>
+                    <br />
+                </React.Fragment>
             ))}
         </Typography>
       </CardContent>
