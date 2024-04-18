@@ -7,9 +7,8 @@ import Example1 from '../Links/links.js'; // Cambia el nombre de la importación
 import Example2 from '../Mentions/mentions.js'; // Cambia el nombre de la importación a Example2
 import Example3 from "../Location/location.js";
 import axios from 'axios';
-import Posts from "../../components/Post/post.js";
 
-const Example = ({loggedInUser, newVariable}) => {
+function Example() {
   const [show, setShow] = useState(false);
   const [hashtags, setHashtags] = useState([]);
   const [links, setLinks] = useState([]); // Cambia el nombre de la variable a `links`
@@ -33,21 +32,13 @@ const Example = ({loggedInUser, newVariable}) => {
     console.log(location); // Imprimir la lista de location
   }, [location]);
 
-  useEffect(() => {
-    console.log('Posts ' + loggedInUser); // Imprimir el texto del tweet
-  }, [loggedInUser]);
-  
-
-  useEffect(() => {
-    console.log(newVariable); // Imprimir el valor de newVariable
-  }, [newVariable]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleSubmit = async () => {
     const tweetData = {
-      autorId: loggedInUser, // Utilizar loggedInUser como el autor del tweet
+      autorId: 'valdecin9', // Utilizar loggedInUser como el autor del tweet
       texto: tweetText,
       hashtags: hashtags,
       links: links,
@@ -130,8 +121,6 @@ const Example = ({loggedInUser, newVariable}) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* Pasar loggedInUser como prop a Posts */}
-      <Posts backgroundColor="blue" width="220px" height="60px" textAlign="center" loggedInUser={loggedInUser} />
     </>
   );
 }
