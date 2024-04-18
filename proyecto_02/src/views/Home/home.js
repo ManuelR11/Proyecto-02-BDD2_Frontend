@@ -63,7 +63,6 @@ const Home = ({loggedInUser}) => {
                         RTId={tweet.id}
                         RT_mention={tweet.author}
                         onButtonPress={handleButtonPress}
-                        showDeleteButton={true}
                     />
                 ))}
             </div>    

@@ -1,5 +1,6 @@
 .home {
     background-color: black;
+    margin-top: -10px;
 }
 
 .tweets{
@@ -17,7 +18,7 @@
     color: white;
     font-size: 22px;
     margin-bottom: 25px;
-    margin-top: 12px;
+    margin-top: 10px;
     text-decoration: underline;
     text-decoration-color: blue; /* Color del subrayado */
     text-underline-offset: 15px; /* Espacio entre el texto y el subrayado */

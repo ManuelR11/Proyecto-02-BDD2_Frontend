@@ -38,7 +38,7 @@ function Example() {
 
   const handleSubmit = async () => {
     const tweetData = {
-      autorId: 'valdecin9', // Utilizar loggedInUser como el autor del tweet
+      autorId: 'valdecin10', // Utilizar loggedInUser como el autor del tweet
       texto: tweetText,
       hashtags: hashtags,
       links: links,
