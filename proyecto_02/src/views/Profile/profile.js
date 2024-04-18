@@ -126,6 +126,8 @@ const Profile = ({ loggedInUser, setLoggedInUser }) => {
                 liked={isLiked} 
                 tweetHashtags={tweet.hashtags} // Propiedad para los hashtags
                 tweetLinks={tweet.links} // Propiedad para los enlaces
+                RTId={tweet.id} // Propiedad para el ID del tweet
+                RT_mention={tweet.author} // Propiedad para la mención del tweet
                 showDeleteButton={true} // Mostrar el botón de borrar
               />
             </div>
