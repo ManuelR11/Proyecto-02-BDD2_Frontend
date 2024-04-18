@@ -23,7 +23,7 @@ function Sidebar({ loggedInUser }) {
     };
 
     const handleBookmarksClick = () => {
-        navigate("/bookmarks");
+        navigate("/Bookmarks");
     };
 
     const handlePostClick = () => {
